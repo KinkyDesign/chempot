@@ -5,8 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { jsmeComponent } from './main/jsme.component';
 
-// angular nested components
-// source: https://www.youtube.com/watch?v=BPLjY-9k-zE
+
 
 
 @NgModule({
