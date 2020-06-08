@@ -1,0 +1,42 @@
+<div class="jsme">
+
+    <h1>
+      
+    <!-- Why does angular need app.component.html although it has index.html? -->
+    <!-- Source: https://stackoverflow.com/questions/47225812/index-html-integration-with-app-component-html-template-in-angular-2 -->
+    <!-- json stringify an object -->
+    <!-- Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify -->
+    
+      <body>
+      <!-- The src and function parts must be loaded before anything else, so they must be in index.html -->
+      <!-- and not in the app.component.html, because this loads after app component is initialized and app component -->
+      <!-- needs jsmeApplet. Until now i have not found a way to directly import the cache.js file of jsme package in the app.component.ts -->
+      <!-- <script type="text/javascript" language="javascript" src="/assets/JSME_2017-02-26/jsme/jsme.nocache.js"></script> -->
+  
+      <script> 
+      // the following inside this script must be declared inside index.html!
+      //this function will be called after the JavaScriptApplet code has been loaded.
+      
+      // var JSApplet;
+      // var jsmeApplet;
+      
+      
+        // function jsmeOnLoad() {
+        //    jsmeApplet = new JSApplet.JSME("jsme_container", "380px", "340px");
+        // }
+      </script>
+      
+  
+        <div id="jsme_container"></div>
+  
+        <button type="button" onclick >Show SMILES</button>
+        <!-- = "console.log(JSON.stringify(jsmeApplet.smiles()))" -->
+  
+        </body>
+        
+    
+    
+    
+    </h1>
+  
+    </div>
