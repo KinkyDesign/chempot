@@ -1,41 +1,29 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>ChempotApp</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link  type="text/javascript" language="javascript" src="/assets/JSME_2017-02-26/jsme/jsme.nocache.js">
+
+  <script type="text/javascript" language="javascript" src="/assets/JSME_2017-02-26/jsme/jsme.nocache.js"></script>
+
+  <script>
+    var JSApplet;
+    var jsmeApplet;
+
+    function jsmeOnLoad() {
+      jsmeApplet = new JSApplet.JSME("jsme_container", "620px", "420px");
+    }
+
+  </script>
+
 </head>
-
-
-<head>
-
-<script type="text/javascript" language="javascript" src="/assets/JSME_2017-02-26/jsme/jsme.nocache.js"></script>
-
-<script> 
-
-
-
-
-var JSApplet;
-var jsmeApplet;
-
-
-
-  function jsmeOnLoad() {
-     jsmeApplet = new JSApplet.JSME("jsme_container", "380px", "340px");
-  }
-</script>
-</head>
-<body>
-<!-- <div id="jsme_container"></div> -->
-<!-- <button type="button" onclick="console.log(JSON.stringify(jsmeApplet.smiles()))">Show SMILES</button> -->
-</body>
-
-
-<body>
+<body class="mat-typography">
   <app-root></app-root>
 </body>
 </html>
