@@ -1,0 +1,16 @@
+<div class="model-selector">
+
+
+  <form>
+    <mat-form-field appearance="fill">
+        <mat-label>Select model</mat-label>
+        <mat-select [formControl]="modelControl">  
+          <mat-option *ngFor="let selected_model of selectedModels" value = "selected_model">
+          {{selected_model.meta.titles}} 
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+  
+  </form>
+  
+</div>

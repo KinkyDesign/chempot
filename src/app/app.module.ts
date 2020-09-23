@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER} from '@angular/core';
+// import { NgModule, APP_INITIALIZER, InjectionToken} from '@angular/core';
+import { NgModule, APP_INITIALIZER} from '@angular/core';       
+import {MatCheckboxModule} from '@angular/material/checkbox'
+import {MatSelectModule} from '@angular/material/select'
 import {MatToolbarModule} from '@angular/material/toolbar'
 import {MatIconModule} from '@angular/material/icon'
 import {MatButtonModule} from '@angular/material/button'
@@ -14,6 +17,7 @@ import {MatPaginatorModule} from '@angular/material/paginator'
 import {MatSnackBarModule} from '@angular/material/snack-bar'
 import {MatBadgeModule} from '@angular/material/badge'
 import {MatMenuModule} from '@angular/material/menu'
+import {MatDialogModule} from '@angular/material/dialog'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +27,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configf } from './models/config';
 import { map, switchMap } from 'rxjs/operators';
 import { JsmeComponent } from './jsme/jsme.component';
-// import { JsmeComponent } from './jsme/jsme.component';
+import { ModelSelector } from './model-selector/model-selector.component';
+import { ModelCheckboxes } from './model-checkboxes/model-checkboxes.component';
+import { DialogsService } from '../app/dialogs/dialogs.service'
+import { MatDialog } from '@angular/material/dialog';
+
+
+
 
 
 @NgModule({
@@ -32,9 +42,12 @@ import { JsmeComponent } from './jsme/jsme.component';
   declarations: [
     AppComponent,
     JsmeComponent,
-    // JsmeComponent,
+    ModelSelector,
+    ModelCheckboxes,
   ],
   imports: [
+    MatCheckboxModule,
+    MatSelectModule,
     MatToolbarModule,
     MatBadgeModule,
     MatMenuModule,
@@ -43,6 +56,7 @@ import { JsmeComponent } from './jsme/jsme.component';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatDialogModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
@@ -59,13 +73,13 @@ import { JsmeComponent } from './jsme/jsme.component';
     AuthModule.forRoot()
   ],
   entryComponents:[],
-  providers: [OidcConfigService,OidcSecurityService ,
+  providers: [OidcConfigService,OidcSecurityService, MatDialog,
     {
         provide: APP_INITIALIZER,
         useFactory: configureAuth,
         deps: [OidcConfigService, HttpClient],
         multi: true,
-    }],
+    }, DialogsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

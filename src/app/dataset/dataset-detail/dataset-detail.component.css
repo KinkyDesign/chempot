@@ -1,0 +1,125 @@
+.data_table{
+    margin:1em;
+}
+
+/* .table{
+  margin-top: 1em;
+} */
+
+/* .example-table-container{
+  margin: 1em;
+} */
+/* table {
+    width: 100%;
+} */
+
+th {
+  min-width: 4em;
+}
+
+td {
+  min-width: 4em;
+}
+
+.example-container {
+  position: relative;
+  margin: 1em;
+}
+
+.example-table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+
+}
+
+table {
+  width: 100%;
+}
+
+.example-loading-shade {
+  /* position: absolute; */
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  /* max-height: 400px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 400px;
+  min-height: 400px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+/* .grid_tile{
+  width:94%;
+  height: 94%;
+} */
+
+.grid{
+  margin: 1em;
+  width:94%;
+}
+
+.example-rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.dataset_image{
+  max-width: 192px;
+  max-height: 192px;
+  margin: 0 auto;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+
+
+.feat_header{
+  position: sticky;
+}
+
+.feat_card{
+  width: 80%;
+  margin: 1em;
+  padding-right: 17px;
+}
+.feat_input{
+  width: 94%;
+}
+
+.feat_header{
+  margin-left: 1em;
+}
+
+.features_header{
+  margin-left: 2em;
+}
+
+.feat{
+  margin: 1em;
+}
+
+.feat_input{
+  width:100%;
+}
+
+.feat_edit{
+  margin: 0 auto;
+  margin-bottom: 1em;
+}

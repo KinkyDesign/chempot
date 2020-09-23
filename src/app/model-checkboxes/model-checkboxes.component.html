@@ -1,0 +1,64 @@
+<!-- <div class="model-checkboxes"> -->
+                    
+               <!-- <ng-container *ngFor="let model_to_view of models_to_view"> -->
+                 <!-- <mat-checkbox class="model-checkboxes" (ngModel)="model_to_view" (change)="checkValue(model_to_view)"> -->
+                    <!-- {{model_to_view.meta.titles}} -->
+                    <!-- {{model_to_view.meta.descriptions}} -->
+                    <!-- {{model_to_view.meta.date  | date : 'dd-MM-yyy' }} -->
+                 <!-- </mat-checkbox> -->
+                <!-- </ng-container> -->
+
+<!-- </div> -->
+
+
+<!-- https://www.positronx.io/angular-checkbox-tutorial/ -->
+
+<!-- <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
+
+  <ng-container *ngFor="let model_to_view of models_to_view; let i=index">
+    <label>
+      <input type="checkbox" class="model-checkboxes" [value]="model_to_view" (change)="onCheckboxChange($event)" />
+      {{model_to_view.meta.titles}}
+      {{model_to_view.meta.date  | date : 'dd-MM-yyy'}}
+    </label>
+  </ng-container>
+
+  <input type="submit" value="Submit">
+</form> -->
+
+
+
+<!-- https://stackoverflow.com/questions/51476599/checkbox-object-in-angular -->
+
+<!-- <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate> -->
+<form [formGroup]="form">
+
+  <ng-container *ngFor="let model_to_view of models_to_view; let i=index">
+    <label>
+      <input type="checkbox" class="model-checkboxes" [value]="model_to_view" (change)="onCheckboxChange(model_to_view)" />
+      {{model_to_view.meta.titles}}
+      {{model_to_view.meta.date  | date : 'dd-MM-yyy'}}
+    </label>
+  </ng-container>
+
+  <!-- <input type="submit" value="Submit"> -->
+</form>
+
+
+
+
+
+<!-- <form>
+  <mat-form-field appearance="fill">
+      <mat-label>Select model</mat-label>
+      <mat-select [formControl]="modelControl"> 
+        <mat-option *ngFor="let selected_model of selected_models" value = "selected_model">
+        {{selected_model.meta.titles}}
+        </mat-option>
+           </mat-select>
+    </mat-form-field>
+
+</form> -->
+
+
+

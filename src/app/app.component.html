@@ -5,7 +5,7 @@
         <mat-icon>menu</mat-icon>
       </button>
 
-      <span >Chempot</span>
+      <span>Chempot</span>
       <span class="example-spacer"></span>
       <button *ngIf="loggedIn; else noAuthenticated" mat-icon-button (click)="logout()" matTooltip="Logout">
         <button mat-icon-button  (click)="logout()">
@@ -36,6 +36,8 @@
       <div class="app">
         <app-jsme></app-jsme>
       </div>
+      <app-model-checkboxes class="model-checkboxes"></app-model-checkboxes>
+    <app-model-selector class="model-selector"></app-model-selector>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
