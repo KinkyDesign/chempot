@@ -28,24 +28,6 @@
 
 
 
-<!-- https://stackoverflow.com/questions/51476599/checkbox-object-in-angular -->
-
-<!-- <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate> -->
-<form [formGroup]="form">
-
-  <ng-container *ngFor="let model_to_view of models_to_view; let i=index">
-    <label>
-      <input type="checkbox" class="model-checkboxes" [value]="model_to_view" (change)="onCheckboxChange(model_to_view)" />
-      {{model_to_view.meta.titles}}
-      {{model_to_view.meta.date  | date : 'dd-MM-yyy'}}
-    </label>
-  </ng-container>
-
-  <!-- <input type="submit" value="Submit"> -->
-</form>
-
-
-
 
 
 <!-- <form>
@@ -59,6 +41,94 @@
     </mat-form-field>
 
 </form> -->
+
+
+
+
+<!-- https://stackoverflow.com/questions/51476599/checkbox-object-in-angular -->
+
+<!-- <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate> -->
+<!-- <form [formGroup]="form">
+
+  <ng-container *ngFor="let model_to_view of models_to_view; let i=index">
+    <label>
+      <input type="checkbox" class="model-checkboxes" [value]="model_to_view" (change)="onCheckboxChange(model_to_view)" />
+      {{model_to_view.meta.titles}}
+      {{model_to_view.meta.date  | date : 'dd-MM-yyy'}}
+    </label>
+  </ng-container>
+
+</form> -->
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+<div class="model-checkboxes">
+
+
+  <form>
+    <mat-form-field appearance="fill">
+        <mat-label>Select organization</mat-label>
+        <mat-select [formControl]="organizationControl">  
+          <mat-option *ngFor="let organization of all_organizations" value = "organization">
+          {{organization.meta.titles}} 
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+  
+  </form>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- If *ngIf is used instead of hidden, then the view is rendered again and the checkboxes selection is forgotten, because the models are fetched from scratch from the api -->
+
+<div [hidden]="allSelectedModelsView">
+
+<mat-paginator #paginator1
+                [length]= "modelsByOrgCounter"
+                [pageIndex]= "pageIndex"
+                [pageSize]= "pageSize"
+                [pageSizeOptions]="[5, 10, 25, 100]"
+                (page)="pageEvent = getModelsByOrganization($event)"
+                >
+</mat-paginator>
+
+
+<mat-selection-list class="model-checkboxes">
+  <mat-list-option *ngFor="let model_to_view of modelsDataSource.data; let i=index" [value]="model_to_view" (click)="onCheckboxChange(model_to_view)" [selected] = "checkboxSelected(model_to_view)" >
+    {{model_to_view.meta.titles}}
+    {{model_to_view.meta.date  | date : 'dd-MM-yyy'}}
+</mat-list-option>
+</mat-selection-list>
+
+</div>
+
+
+<div [hidden]="!allSelectedModelsView">
+
+  <mat-list>
+    <mat-list-item *ngFor= "let selected_model of selected_models" >
+      {{selected_model.meta.titles}}
+      {{selected_model.meta.date  | date : 'dd-MM-yyy'}}
+    </mat-list-item>
+  </mat-list>
+
+</div>
+
+<button mat-button color="accent" (click)="showAllSelectedModels()">Show/Hide all the Selected Models</button>
+
 
 
 

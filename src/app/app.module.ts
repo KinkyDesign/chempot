@@ -14,6 +14,7 @@ import {MatExpansionModule} from '@angular/material/expansion'
 import {MatTooltipModule} from '@angular/material/tooltip'
 import {MatListModule} from '@angular/material/list'
 import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatChipsModule} from '@angular/material/chips';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
 import {MatBadgeModule} from '@angular/material/badge'
 import {MatMenuModule} from '@angular/material/menu'
@@ -46,6 +47,8 @@ import { MatDialog } from '@angular/material/dialog';
     ModelCheckboxes,
   ],
   imports: [
+    MatChipsModule,
+    MatPaginatorModule,
     MatCheckboxModule,
     MatSelectModule,
     MatToolbarModule,

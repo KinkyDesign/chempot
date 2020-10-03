@@ -1,4 +1,11 @@
-:host.model-selector{
-    position: relative;
-    left: 2em;
+// :host.model-selector{
+//     position: relative;
+//     left: 2em;
+// }
+
+:host.model-selector {
+    position: absolute;
+    left: 700px;
+    display:table-column;
+    width: 50%;
 }
