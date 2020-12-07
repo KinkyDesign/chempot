@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AppModule } from '../app.module';
 // import { ConfigService } from '../app.';
 
-import { SessionService } from '../session/session.service';
-import { SessionModule } from '../session/session.module';
+// import { SessionService } from '../session/session.service';
+// import { SessionModule } from '../session/session.module';
 import { AlgorithmService } from './api/algorithm.service';
 // import { AlgorithmService } from './api/algorithm.service';
 // import { BibtexService } from './api/bibtex.service';
@@ -20,12 +20,12 @@ import { ModelApiService } from './api/model.service';
 // import { TaskService } from './api/task.service';
 import { UserService } from './api/user.service';
 import { OrganizationService } from './api/organization.service';
-import { NotificationFactoryService } from './factories/notification-factory.service';
+// import { NotificationFactoryService } from './factories/notification-factory.service';
 import { NotificationBuilderService } from './builders/notification-builder.service';
 import { NotificationService } from './api/notification.service';
 import { DatasetBuilderService } from './builders/dataset-builder.service';
-import { DatasetFactoryService } from './factories/dataset-factory.service';
-import { FeatureFactoryService } from './factories/feature-factory.service';
+// import { DatasetFactoryService } from './factories/dataset-factory.service';
+// import { FeatureFactoryService } from './factories/feature-factory.service';
 import { FeatureApiService } from './api/feature.service';
 import { DiscussionService } from './api/discussion.service';
 import { TaskApiService } from './api/task.service';
@@ -38,12 +38,14 @@ import { HttkApiService } from './api/httk.service';
 // import { ValidationService } from './api/validation.service';
 
 @NgModule({
-  imports:      [SessionModule],
+  imports:      [
+    // SessionModule
+  ],
   declarations: [],
   exports:      [],
   providers:    [ 
     // AaService,
-    SessionService,
+    // SessionService,
     AlgorithmService,
     FeatureApiService, 
     // AlgorithmService, 
@@ -63,11 +65,11 @@ import { HttkApiService } from './api/httk.service';
     OrganizationService,
     NotificationService,
     // ValidationService 
-    NotificationFactoryService,
+    // NotificationFactoryService,
     NotificationBuilderService,
     DatasetBuilderService,
-    DatasetFactoryService,
-    FeatureFactoryService,
+    // DatasetFactoryService,
+    // FeatureFactoryService,
     DiscussionService,
     TaskApiService,
     ValidationApiService,

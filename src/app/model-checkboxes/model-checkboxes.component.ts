@@ -1,28 +1,40 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { ModelApiService } from '../jaqpot-client/api/model.service';
 import { HttpParams } from '@angular/common/http';
 import { Model } from '../jaqpot-client/model/models';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { map, tap, concatMap } from 'rxjs/operators';
 // import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 // import { debounceTime } from 'rxjs/operators';
 import { SelectedModelsStateService } from './selectedModels-state.service'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Organization } from '../jaqpot-client/model/organization';
+import { Organization } from '@euclia/accounts-client/dist/models/models';
+import { OrganizationService } from '../jaqpot-client/api/organization.service';
+import { UserService } from '../jaqpot-client/api/user.service';
+import {User} from '@euclia/accounts-client/dist/models/models';
+// import { UserService } from 'angular-auth-oidc-client/lib/userData/user-service';
+
 // import { MatSelectionList } from '@angular/material/list';
 
 @Component({
   selector: 'app-model-checkboxes',
   templateUrl: './model-checkboxes.component.html',
   styleUrls: ['./model-checkboxes.component.scss'],
-  providers: [ModelApiService]
+  providers: [ModelApiService, UserService]
 })
 export class ModelCheckboxes implements OnInit {
 
   organizationControl: FormControl;
+  tagControl: FormControl;
   @ViewChild('paginator1') paginator: MatPaginator;
-  all_organizations: Organization[] | null;
+  all_user_organizations: Organization[] | null = [];
+  all_user_organizations_ids: string[];
+  all_user_organizations_names: string[];
+  all_users: User[] | null = [];
+  user: User;
   models_to_view: Model[];
+  model_to_view: Model;
   selected_models: Model[] | null = [];
   checkArray: Model[] = [];
   modelsByOrgCounter: any;
@@ -31,73 +43,139 @@ export class ModelCheckboxes implements OnInit {
   pageIndex: number;
   min: number;
   max: number; 
-  organization = "LamaRed";
+  organization: Organization;
   allSelectedModelsView = false;
   modelsDataSource = new MatTableDataSource();
+  models_tags: string[];
+  model_tag: string;
+  o:Organization;
+  e:PageEvent;
+  t:string;
 
   // form: FormGroup;
   // modelControl: FormControl;
 
   constructor(
     private modelApiService: ModelApiService,
+    private selectedModelsStateService: SelectedModelsStateService,
+    private orgService: OrganizationService,
+    private userService: UserService
     // private fb: FormBuilder,
-    private selectedModelsStateService: SelectedModelsStateService
   ) {
-    // this.form = this.fb.group({some_array: this.fb.array([])});
     this.selectedModelsStateService.changeSelectedModels(this.selected_models);
+    // this.form = this.fb.group({some_array: this.fb.array([])});
    }
 
+
+  // https://stackoverflow.com/questions/50753628/what-is-the-difference-between-angular-ngoninit-and-ngonchanges
   ngOnInit() {
 
-    this.getAllOrganizations();
-    this.getModelsTotalNumberByOrganization();
-    this.getModelsByOrganization(null);
-    
+    this.getAllUserOrganizations();
+    this.getModels(null);
     this.modelsDataSource.paginator = this.paginator;
     this.organizationControl = new FormControl();
+    this.tagControl = new FormControl();
+
+    this.pageIndex = 0;
+    this.pageSize = 5;
+    this.min = this.pageSize*(this.pageIndex);
+    this.max = this.min + (this.pageSize);
+
 
     // this.modelControl = new FormControl();
   }
 
 
 
-  public getAllOrganizations(){
 
-    let params = new HttpParams();
-    this.modelApiService.getList<Organization>(params).subscribe(
-      (organizations:Organization[]) => {
-        this.all_organizations = organizations;
-      }
-    );
 
-    console.log(this.all_organizations);
+  public getAllUserOrganizations(){
+
+    this.userService.getUserById(JSON.parse(localStorage.getItem('chempot_userData'))["sub"]).then(
+      u => {
+        this.user = u;
+        // console.log(this.user);
+        this.all_user_organizations_ids = this.user.organizations;
+        this.user.organizations.forEach(
+          (o:string) => {
+            this.orgService.getOrgById(o).then((o:Organization) => 
+            {
+              this.all_user_organizations.push(o);
+             }
+            )
+          }
+        )
+         
+       }
+
+    )
+
+  }
+
+
+
+
+
+  public getModelsTotalNumberAndTagsByOrganization(o:Organization){
+    if(o){
+
+    this.organization = o;
+    let params = new HttpParams().set("organization", this.organization._id);
+    // https://stackoverflow.com/questions/37364973/what-is-the-difference-between-promises-and-observables
+    // https://egghead.io/lessons/angular-fetch-data-from-an-api-using-the-httpclient-in-angular
+    // https://stackoverflow.com/questions/46767880/what-does-subscribe-do-and-how-it-is-related-to-observable
+    this.modelApiService.count<Model>(params).subscribe(
+      total => this.modelsByOrgCounter = total.headers.get('total')
+      );
+      
+////////////////////////// this part needs to be tested with non empty tags////////////////////////
+      this.modelApiService.getList(params).subscribe(
+        (models:Model[]) => {
+          this.models_to_view = models;
+          
+          this.models_to_view.forEach((model_to_view: Model) => {
+            
+            if(model_to_view.meta.tags){
+            model_to_view.meta.tags.forEach((model_tag:string) => {
+            
+              this.models_tags.push(model_tag);
+
+             })
+            }else{
+
+              this.models_tags = [''];
+            }
+          });
+
+
+        }
+      );
+////////////////////////// this part needs to be tested with non empty tags////////////////////////
+
+    }
 
 
   }
 
 
-  public getModelsTotalNumberByOrganization(){
-
-    let params = new HttpParams().set("organization", this.organization);
-    this.modelApiService.count<Model>(params).subscribe(total => this.modelsByOrgCounter = total.headers.get('total'));
-
-  }
 
 
 
 
-  public getModelsByOrganization(e?:PageEvent) {
-   if(e){
+
+
+  public getModelsByOrganizationAndTag(o: Organization, e?:PageEvent, t?:string) {
+
+
+   if(e && o && (!t||(t = ''))){
+
     this.pageIndex = e.pageIndex;
     this.pageSize = e.pageSize;
     this.min = this.pageSize*(this.pageIndex);
     this.max = this.min + (this.pageSize);
 
-    // let params = new HttpParams().set("start", this.min.toString()).set("max", this.max.toString()).set("organization", this.organization);
-    let params = new HttpParams().set("organization", this.organization).set("start", this.min.toString()).set("max", this.max.toString());
-   
-    // https://egghead.io/lessons/angular-fetch-data-from-an-api-using-the-httpclient-in-angular
-    // https://stackoverflow.com/questions/46767880/what-does-subscribe-do-and-how-it-is-related-to-observable
+    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+    
     this.modelApiService.getList(params).subscribe(
       (models:Model[]) => {
         this.models_to_view = models;
@@ -106,18 +184,15 @@ export class ModelCheckboxes implements OnInit {
     );
     return e;
 
-   }else{
+   }else if(!e && o && (!t||(t = ''))){
 
      this.pageIndex = 0;
      this.pageSize = 5;
      this.min = this.pageSize*(this.pageIndex);
      this.max = this.min + (this.pageSize);
  
-     // let params = new HttpParams().set("start", this.min.toString()).set("max", this.max.toString()).set("organization", this.organization);
-     let params = new HttpParams().set("organization", this.organization).set("start", this.min.toString()).set("max", this.max.toString());
+     let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
     
-     // https://egghead.io/lessons/angular-fetch-data-from-an-api-using-the-httpclient-in-angular
-     // https://stackoverflow.com/questions/46767880/what-does-subscribe-do-and-how-it-is-related-to-observable
      this.modelApiService.getList(params).subscribe(
        (models:Model[]) => {
          this.models_to_view = models;
@@ -126,9 +201,93 @@ export class ModelCheckboxes implements OnInit {
        }
      );
  
+   }else if(e && o && (t && (t != ''))){
+
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.min = this.pageSize*(this.pageIndex);
+    this.max = this.min + (this.pageSize);
+
+    let params = new HttpParams().set("tags", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+   
+    this.modelApiService.getList(params).subscribe(
+      (models:Model[]) => {
+        this.models_to_view = models;
+        this.modelsDataSource.data = this.models_to_view;
+
+      }
+    );
+
+    return e;
+
+   }else if(!e && o && (t && (t != ''))){
+
+    this.pageIndex = 0;
+    this.pageSize = 5;
+    this.min = this.pageSize*(this.pageIndex);
+    this.max = this.min + (this.pageSize);
+
+    let params = new HttpParams().set("tags", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+   
+    this.modelApiService.getList(params).subscribe(
+      (models:Model[]) => {
+        this.models_to_view = models;
+        this.modelsDataSource.data = this.models_to_view;
+
+      }
+    );
+
+
+   }else if(!e && o && (t && (t = ''))){
+
+    this.pageIndex = 0;
+    this.pageSize = 5;
+    this.min = this.pageSize*(this.pageIndex);
+    this.max = this.min + (this.pageSize);
+
+    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+   
+    this.modelApiService.getList(params).subscribe(
+      (models:Model[]) => {
+        this.models_to_view = models;
+        this.modelsDataSource.data = this.models_to_view;
+
+      }
+    );
+
+
+   }else if(e && o && (t && (t = ''))){
+
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.min = this.pageSize*(this.pageIndex);
+    this.max = this.min + (this.pageSize);
+
+    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+   
+    this.modelApiService.getList(params).subscribe(
+      (models:Model[]) => {
+        this.models_to_view = models;
+        this.modelsDataSource.data = this.models_to_view;
+
+      }
+    );
+
+    return e;
+
    }
   }
 
+
+
+
+
+  public getModels(o:Organization, e?:PageEvent, t?:string){
+    this.getModelsTotalNumberAndTagsByOrganization(o);
+    this.getModelsByOrganizationAndTag(o, e, t);
+    // this.getModelsTagsByOrganization();
+  }
+  
   
 
   public showAllSelectedModels(){

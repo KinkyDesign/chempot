@@ -13,15 +13,18 @@ import { Config } from '../../config/config';
 import { DialogsService } from '../../dialogs/dialogs.service';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { User } from '../model/user';
 import { BaseClient } from './base.client';
+import {EucliaAccountsFactory, EucliaAccountsImplementation} from '@euclia/accounts-client'
+import {IEucliaAccounts} from '@euclia/accounts-client'
+import {User} from '@euclia/accounts-client'
 
 
 @Injectable()
-export class UserService extends BaseClient<User>{
+export class UserService {
 
     
     private _privateBasePath : string;
+    private accountsClient:IEucliaAccounts
 
 
     private user:User;
@@ -31,60 +34,69 @@ export class UserService extends BaseClient<User>{
     // private _getUserIdQuota : string;
 
 
-    constructor(public http: HttpClient,
-        // public sessionServise:SessionService,
+    // constructor(public http: HttpClient,
+    //     // public sessionServise:SessionService,
+    //     public dialogsService:DialogsService,
+    //     public oidcSecurityService: OidcSecurityService){
+    //         super(http, dialogsService, oidcSecurityService, "/user/")
+    //         this._privateBasePath = Config.JaqpotBase;
+    //         this._userBase = this._privateBasePath + "/user/"
+    //     }
+
+    constructor(
+        public http: HttpClient,
         public dialogsService:DialogsService,
         public oidcSecurityService: OidcSecurityService){
-            super(http, dialogsService, oidcSecurityService, "/user/")
+            // super(http, dialogsService, oidcSecurityService, "/user/")
+            // console.log("User api at:")
+            // console.log(Config.AccountsApi)
+            this.accountsClient = new EucliaAccountsFactory(Config.AccountsApi).getClient(),
             this._privateBasePath = Config.JaqpotBase;
             this._userBase = this._privateBasePath + "/user/"
         }
 
-    public getUserById(id:string): Observable<User> {
-        const token = this.oidcSecurityService.getToken();
-        const tokenValue = 'Bearer ' + token;
-        let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
-        let params = new HttpParams();
-        return this.http.get(this._userBase + id, { headers: headers, params: params }).pipe(
-            tap((res : Response) => {
-                return res         
-            }),catchError( err => this.dialogsService.onError(err) ));
-    }
-    
-    public updateUserById(id:string, user:User): Observable<User> {
-        const token = this.oidcSecurityService.getToken();
-        const tokenValue = 'Bearer ' + token;
-        let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
-        let params = new HttpParams();
-        return this.http.put(this._userBase + id, user ,{ headers: headers, params: params }).pipe(
-            tap((res : Response) => {  
-                return res           
-            }),catchError( err => this.dialogsService.onError(err) ));
-    }
-
-    public searchUserByName(name:string): Observable<Array<User>> {
-        const token = this.oidcSecurityService.getToken();
-        const tokenValue = 'Bearer ' + token;
-        let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
-        let params = new HttpParams().set('name', name);
-        return this.http.get(this._userBase + "search/and/found", { headers: headers, params: params }).pipe(
-            tap((res : Response) => {  
-                return res         
-            }),catchError( err => this.dialogsService.onError(err) ));
-    }
-
-    public searchUserEmail(email:string): Observable<Array<User>> {
-        const token = this.oidcSecurityService.getToken();
-        const tokenValue = 'Bearer ' + token;
-        let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
-        let params = new HttpParams().set('mail', email);
-        return this.http.get(this._userBase + "search/and/found", { headers: headers, params: params }).pipe(
-            tap((res : Response) => {  
-                return res         
-            }),catchError( err => this.dialogsService.onError(err) ));
-    }
+        public getUserById(id:string): Promise<User> {
+            const token = this.oidcSecurityService.getToken();
+            return this.accountsClient.getUser(id, token)        
+        }    
 
 }
+
+
+
+    // public updateUserById(id:string, user:User): Observable<User> {
+    //     const token = this.oidcSecurityService.getToken();
+    //     const tokenValue = 'Bearer ' + token;
+    //     let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
+    //     let params = new HttpParams();
+    //     return this.http.put(this._userBase + id, user ,{ headers: headers, params: params }).pipe(
+    //         tap((res : Response) => {  
+    //             return res           
+    //         }),catchError( err => this.dialogsService.onError(err) ));
+    // }
+
+    // public searchUserByName(name:string): Observable<Array<User>> {
+    //     const token = this.oidcSecurityService.getToken();
+    //     const tokenValue = 'Bearer ' + token;
+    //     let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
+    //     let params = new HttpParams().set('name', name);
+    //     return this.http.get(this._userBase + "search/and/found", { headers: headers, params: params }).pipe(
+    //         tap((res : Response) => {  
+    //             return res         
+    //         }),catchError( err => this.dialogsService.onError(err) ));
+    // }
+
+    // public searchUserEmail(email:string): Observable<Array<User>> {
+    //     const token = this.oidcSecurityService.getToken();
+    //     const tokenValue = 'Bearer ' + token;
+    //     let headers = new HttpHeaders().set('Content-Type','application/json').set('Authorization', tokenValue);
+    //     let params = new HttpParams().set('mail', email);
+    //     return this.http.get(this._userBase + "search/and/found", { headers: headers, params: params }).pipe(
+    //         tap((res : Response) => {  
+    //             return res         
+    //         }),catchError( err => this.dialogsService.onError(err) ));
+    // }
+
 
 //     protected basePath = 'http://dev.jaqpot.org:8081/jaqpot/services';
 //     public defaultHeaders: Headers = new Headers();

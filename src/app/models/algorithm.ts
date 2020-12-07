@@ -10,7 +10,10 @@
  * Do not edit the class manually.
  */
 
-import { BibTeX } from './bibTeX';
+
+ 
+
+// import { BibTeX } from './bibTeX';
 import { MetaInfo } from './metaInfo';
 import { Parameter } from './parameter';
 
@@ -31,7 +34,7 @@ export interface Algorithm {
 
     ranking?: number;
 
-    bibtex?: Array<BibTeX>;
+    // bibtex?: Array<BibTeX>;
 
     trainingService?: string;
 

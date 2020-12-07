@@ -11,7 +11,7 @@
  */
 
 import { Algorithm } from './algorithm';
-import { BibTeX } from './bibTeX';
+// import { BibTeX } from './bibTeX';
 import { MetaInfo } from './metaInfo';
 
 
@@ -40,7 +40,7 @@ export interface Model {
 
     algorithm?: Algorithm;
 
-    bibtex?: BibTeX;
+    // bibtex?: BibTeX;
 
     actualModel?: any;
 

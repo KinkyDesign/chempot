@@ -28,10 +28,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configf } from './models/config';
 import { map, switchMap } from 'rxjs/operators';
 import { JsmeComponent } from './jsme/jsme.component';
-import { ModelSelector } from './model-selector/model-selector.component';
+import { ModelTables } from './model-tables/model-tables.component';
 import { ModelCheckboxes } from './model-checkboxes/model-checkboxes.component';
 import { DialogsService } from '../app/dialogs/dialogs.service'
 import { MatDialog } from '@angular/material/dialog';
+import { OrganizationService } from './jaqpot-client/api/organization.service';
+import { MatTableModule } from '@angular/material/table';
+// import { CdkTreeModule } from '@angular/cdk/tree';
+// import { MatTreeModule } from '@angular/material/tree';
 
 
 
@@ -39,11 +43,12 @@ import { MatDialog } from '@angular/material/dialog';
 
 @NgModule({
   exports:[
+    MatTableModule
   ],
   declarations: [
     AppComponent,
     JsmeComponent,
-    ModelSelector,
+    ModelTables,
     ModelCheckboxes,
   ],
   imports: [
@@ -73,10 +78,13 @@ import { MatDialog } from '@angular/material/dialog';
     MatInputModule,
     FormsModule,
     MatSidenavModule,
+    MatTableModule,
+    // CdkTreeModule,
+    // MatTreeModule,
     AuthModule.forRoot()
   ],
   entryComponents:[],
-  providers: [OidcConfigService,OidcSecurityService, MatDialog,
+  providers: [OidcConfigService,OidcSecurityService, MatDialog, OrganizationService,
     {
         provide: APP_INITIALIZER,
         useFactory: configureAuth,

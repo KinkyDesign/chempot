@@ -4,7 +4,7 @@ import '../rxjs-operators';
 import { map, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 import { Dataset } from '../model/dataset';
 import { Config } from '../../config/config';
-import { SessionService } from '../../session/session.service';
+// import { SessionService } from '../../session/session.service';
 import { DialogsService } from '../../dialogs/dialogs.service';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { BaseClient } from './base.client';
@@ -19,7 +19,7 @@ export class ValidationApiService extends BaseClient<Task>{
     _validateBase:string = "/validation/"
 
     constructor(http: HttpClient,
-        public sessionServise:SessionService,
+        // public sessionServise:SessionService,
         public dialogsService:DialogsService,
         public oidcSecurityService: OidcSecurityService){
             super(http, dialogsService, oidcSecurityService, "/validation/")

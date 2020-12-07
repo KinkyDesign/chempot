@@ -1,0 +1,38 @@
+<!-- <div class="model-tables">
+
+  <form>
+    <mat-form-field appearance="fill">
+        <mat-label>Select model</mat-label>
+        <mat-select [formControl]="modelControl">  
+          <mat-option *ngFor="let selected_model of selectedModels" value = "selected_model">
+          {{selected_model.meta.titles}} 
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+  
+  </form>
+  
+</div>
+ -->
+
+
+<table mat-table [dataSource]="selectedModels">
+  <ng-container>
+    <th mat-header-cell *matHeaderCellDef> Model Title </th>
+    <td mat-cell  *ngFor = "let model"> {{model.meta.titles}} </td>
+  </ng-container>
+
+  <!-- <ng-container>
+    <th mat-header-cell *matHeaderCellDef> Model Title </th>
+    <td mat-cell *ngFor = "let model"> {{model.meta.tags}} </td>
+  </ng-container> -->
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+
+
+

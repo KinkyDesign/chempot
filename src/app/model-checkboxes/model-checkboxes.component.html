@@ -72,9 +72,9 @@
   <form>
     <mat-form-field appearance="fill">
         <mat-label>Select organization</mat-label>
-        <mat-select [formControl]="organizationControl">  
-          <mat-option *ngFor="let organization of all_organizations" value = "organization">
-          {{organization.meta.titles}} 
+        <mat-select [formControl]="organizationControl" [(ngModel)]="organization" (selectionChange)="getModels(o = $event.value)">  
+          <mat-option *ngFor="let organization of all_user_organizations" [value] = "organization"> 
+          {{organization.title}} 
           </mat-option>
         </mat-select>
     </mat-form-field>
@@ -83,6 +83,26 @@
   
 </div>
 
+
+<!-- this part needs to be tested with non empty tags -->
+<div class="model-checkboxes">
+
+
+  <form>
+    <mat-form-field appearance="fill">
+        <mat-label>Select model tag</mat-label>
+        <mat-select [formControl]="tagControl" [(ngModel)]="model_tag" (selectionChange)="getModelsByOrganizationAndTag(t = $event.value)">  
+          <mat-option *ngFor="let model_tag of models_tags; let i=index" [value]="model_tag"> 
+          {{model_tag}} 
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+  
+  </form>
+  
+</div>
+
+<!-- this part needs to be tested with non empty tags -->
 
 
 
@@ -101,7 +121,7 @@
                 [pageIndex]= "pageIndex"
                 [pageSize]= "pageSize"
                 [pageSizeOptions]="[5, 10, 25, 100]"
-                (page)="pageEvent = getModelsByOrganization($event)"
+                (page)="pageEvent = getModelsByOrganizationAndTag(o = this.organization, e = $event)"
                 >
 </mat-paginator>
 
@@ -127,7 +147,7 @@
 
 </div>
 
-<button mat-button color="accent" (click)="showAllSelectedModels()">Show/Hide all the Selected Models</button>
+<button mat-button color="accent" (click)="showAllSelectedModels()">Show only the Selected Models</button>
 
 
 
