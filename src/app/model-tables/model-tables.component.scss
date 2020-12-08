@@ -3,12 +3,14 @@
 //     left: 2em;
 // }
 
-:host.model-selector {
-    position: absolute;
-    left: 700px;
-    display:table-column;
-    width: 50%;
-}
+
+
+// :host.model-tables {
+//     position: absolute;
+//     left: 700px;
+//     display:table-column;
+//     width: 50%;
+// }
 
 table {
     width: 100%;

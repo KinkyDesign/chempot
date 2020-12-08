@@ -1,6 +1,5 @@
 import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { Model } from '../jaqpot-client/model/models';
 
 
 @Injectable(
@@ -16,9 +15,9 @@ export class SmilesStateService {
  constructor(){}
     
     // changeSmile is the observer
-    changeSmile(smile: string | null): void{
+    changeSmile(selected_smile: string | null): void{
 
-    this.smileSource.next(smile);
+    this.smileSource.next(selected_smile);
 
 
     }

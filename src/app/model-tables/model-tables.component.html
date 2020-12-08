@@ -12,26 +12,43 @@
   
   </form>
   
+</div> -->
+
+
+<div>
+  <table>
+     <thead>
+        <tr>
+           <th>Model Title</th>
+           <th>Smiles</th>
+           <th>Prediction</th>
+        </tr>
+     </thead>
+     <tbody>
+        <tr *ngFor="let model of selectedModels">
+           <td>{{ model.meta.titles }}</td>
+           <td>{{ selected_smile }}</td>
+           <td> </td>
+           <td>
+              <button type="button" >Predict</button>
+           </td>
+        </tr>
+     </tbody>
+  </table>
 </div>
- -->
 
 
-<table mat-table [dataSource]="selectedModels">
-  <ng-container>
+<!-- <table mat-table [dataSource]="selectedModels">
+  <ng-container matColumnDef = "model.meta.titles">
     <th mat-header-cell *matHeaderCellDef> Model Title </th>
     <td mat-cell  *ngFor = "let model"> {{model.meta.titles}} </td>
   </ng-container>
-
-  <!-- <ng-container>
-    <th mat-header-cell *matHeaderCellDef> Model Title </th>
-    <td mat-cell *ngFor = "let model"> {{model.meta.tags}} </td>
-  </ng-container> -->
 
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-</table>
+</table> -->
 
 
 

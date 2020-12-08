@@ -42,14 +42,12 @@ import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
-  exports:[
-    MatTableModule
-  ],
+  exports:[ ],
   declarations: [
     AppComponent,
     JsmeComponent,
-    ModelTables,
     ModelCheckboxes,
+    ModelTables
   ],
   imports: [
     MatChipsModule,

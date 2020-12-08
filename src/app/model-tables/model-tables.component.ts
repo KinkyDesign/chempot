@@ -20,7 +20,7 @@ export class ModelTables implements OnInit {
   form: FormGroup;
   modelControl: FormControl;
   selectedModels: Model[] = [];
-  smile: string;
+  selected_smile: string;
   displayedColumns: string[] = ['Model Title', 'Smiles', 'Prediction'];
 
 
@@ -56,17 +56,17 @@ export class ModelTables implements OnInit {
     });  
     
     
-    this.smilesStateService.smilesChange$.subscribe(smile_transfered => {
+    this.smilesStateService.smilesChange$.subscribe(smile => {
       
       
-      this.smile = smile_transfered;
-
+      this.selected_smile = smile;
+      console.log(this.selected_smile);
 
     });    
 
     
     this.modelControl = new FormControl();
-    
+
   }
 
 

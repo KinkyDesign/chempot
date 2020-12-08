@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { SmilesStateService } from '../jsme/smiles-state.service';
+
 
 declare var JSApplet: any;
 declare var jsmeApplet: any; 
@@ -11,7 +13,19 @@ declare var jsmeApplet: any;
 export class JsmeComponent implements OnInit {
 
   jsmeApplet:any
-  constructor() { }
+  selected_smile: string | null = '';
+
+
+  constructor(
+
+    private smilesStateService: SmilesStateService
+
+  ) { 
+
+    this.smilesStateService.changeSmile(this.selected_smile);
+  }
+
+
 
   ngOnInit(): void {
     this.jsmeApplet = new JSApplet.JSME("jsme_container", "620px", "480px");
@@ -32,7 +46,11 @@ export class JsmeComponent implements OnInit {
   }
 
   showSmiles(){
-    console.log(this.jsmeApplet.smiles())
+    this.selected_smile = this.jsmeApplet.smiles();
+
+    this.smilesStateService.changeSmile(this.selected_smile);
+    
+    console.log(this.selected_smile);
   }
 
 
