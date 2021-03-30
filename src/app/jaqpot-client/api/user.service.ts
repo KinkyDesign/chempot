@@ -19,7 +19,12 @@ import {IEucliaAccounts} from '@euclia/accounts-client'
 import {User} from '@euclia/accounts-client'
 
 
-@Injectable()
+@Injectable(
+    {
+        providedIn: 'root',
+      }
+
+)
 export class UserService {
 
     

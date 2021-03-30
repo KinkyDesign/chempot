@@ -34,6 +34,8 @@ import { DialogsService } from '../app/dialogs/dialogs.service'
 import { MatDialog } from '@angular/material/dialog';
 import { OrganizationService } from './jaqpot-client/api/organization.service';
 import { MatTableModule } from '@angular/material/table';
+
+
 // import { CdkTreeModule } from '@angular/cdk/tree';
 // import { MatTreeModule } from '@angular/material/tree';
 
@@ -82,7 +84,7 @@ import { MatTableModule } from '@angular/material/table';
     AuthModule.forRoot()
   ],
   entryComponents:[],
-  providers: [OidcConfigService,OidcSecurityService, MatDialog, OrganizationService,
+  providers: [OidcConfigService,OidcSecurityService, MatDialog, OrganizationService,  
     {
         provide: APP_INITIALIZER,
         useFactory: configureAuth,

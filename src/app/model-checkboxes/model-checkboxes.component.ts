@@ -21,7 +21,6 @@ import {User} from '@euclia/accounts-client/dist/models/models';
   selector: 'app-model-checkboxes',
   templateUrl: './model-checkboxes.component.html',
   styleUrls: ['./model-checkboxes.component.scss'],
-  providers: [ModelApiService, UserService]
 })
 export class ModelCheckboxes implements OnInit {
 

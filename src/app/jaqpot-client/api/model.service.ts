@@ -14,7 +14,11 @@ import { MetaInfo, Model, Task } from '../model/models';
 
 
 
-@Injectable()
+@Injectable(
+    {
+        providedIn: 'root',
+      }
+)
 export class ModelApiService extends BaseClient<Model>{
 
     _privateBasePath:string;
