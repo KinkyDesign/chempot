@@ -17,7 +17,6 @@ import { Prediction } from '@euclia/jaqpot-client/dist/models/jaqpot.models';
   selector: 'app-model-tables',
   templateUrl: './model-tables.component.html',
   styleUrls: ['./model-tables.component.scss'],
-  providers: [JaqpotClient]
 })
 export class ModelTables implements OnInit {
 
@@ -38,7 +37,6 @@ export class ModelTables implements OnInit {
     private fb: FormBuilder,
     public oidcSecurityService: OidcSecurityService,
     // public predictionService: PredictionService,
-    private jaqpotClient: JaqpotClient,
 
   ) {
 
@@ -78,10 +76,10 @@ export class ModelTables implements OnInit {
 
     });    
 
-    console.log(this.jaqpotClient.chempot(this.chempot, this.token).then((res:Prediction)=>{
-      res.data;
-      res.predictions;
-      }));
+    // console.log(this.jaqpotClient.chempot(this.chempot, this.token).then((res:Prediction)=>{
+    //   res.data;
+    //   res.predictions;
+    //   }));
 
 
 
