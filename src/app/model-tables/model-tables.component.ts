@@ -6,11 +6,14 @@ import { SmilesStateService } from '../jsme/smiles-state.service';
 import { Chempot } from '@euclia/jaqpot-client/dist/models/jaqpot.models';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { MatTableDataSource } from '@angular/material/table';
+import { JaqpotClient } from '@euclia/jaqpot-client';
+import { JaqpotService } from '../jaqpot-client/api/jaqpot.service';
+import { Prediction } from '@euclia/jaqpot-client/dist/models/jaqpot.models';
+
+// import {MatButtonModule} from '@angular/material/button';
 // import { PredictionService } from './prediction-service'
 // import { Observable, BehaviorSubject } from 'rxjs'
 // import { ModelApiService } from '../jaqpot-client/api/model.service';
-// import { JaqpotClient } from '@euclia/jaqpot-client';
-// import { Prediction } from '@euclia/jaqpot-client/dist/models/jaqpot.models';
 
 export interface TableObject {
   ModelTitle: string
@@ -30,13 +33,15 @@ export class ModelTables implements OnInit {
   selectedModels: Model[] = [];
   rendered_models: TableObject[];
   selected_smile: string;
-  displayedColumns: string[] = ['ModelTitle', 'Smiles', 'Predict'];
+  displayedColumns: string[] = ['ModelTitle', 'Smiles', 'Predict', 'Prediction'];
   selected_model_ids: string[];
   chempot: Chempot = {};
   token: string;
   dataSourceArray = [];
   dataSource = new MatTableDataSource<TableObject>();
+  // predict = new MatButtonModule;
   render = false;
+  jaqpotClient: JaqpotClient;
 
   constructor(
 
@@ -45,17 +50,17 @@ export class ModelTables implements OnInit {
     private smilesStateService: SmilesStateService,
     private fb: FormBuilder,
     public oidcSecurityService: OidcSecurityService,
+    private jaqpotService: JaqpotService,
     // public predictionService: PredictionService,
 
   ) {
 
     this.form = this.fb.group({some_array: this.fb.array([])});
-    this.chempot.descriptors = "cdk";
-    this.chempot.modelId = "2XyMtChRiSfZ6UmKirhi";
-    this.chempot.withDoa = false;
-    this.chempot.smiles = "c2ccc(c1ccccc1)cc2";
-    // this.chempot.smiles = this.selected_smile;
-    this.token = this.oidcSecurityService.getToken();
+    // this.chempot.descriptors = "MORDRED";
+    // this.chempot.modelId = "2XyMtChRiSfZ6UmKirhi";
+    // this.chempot.withDoa = false;
+    // this.chempot.smiles = "c2ccc(c1ccccc1)cc2";
+    // this.token = this.oidcSecurityService.getToken();
 
 
    }
@@ -129,10 +134,33 @@ export class ModelTables implements OnInit {
 
       });   
 
-    
+// /////////////////////////////////////////////////
+    // var chempot:Chempot = {}
+    // chempot.descriptors = "MORDRED";
+    // chempot.modelId = "2XyMtChRiSfZ6UmKirhi";
+    // chempot.smiles = "CCSDDDF";
+    // chempot.withDoa = false;
+    // this.token = this.oidcSecurityService.getToken();
+// //////////////////////////////////////////////////
     this.modelControl = new FormControl();
     
   }
+
+  chempredict(tablerow:any){
+    
+    this.chempot.withDoa = false;
+    this.chempot.descriptors = "MORDRED";
+    this.chempot.modelId = tablerow.ModelTitle;
+    this.chempot.smiles = tablerow.smiles;
+    this.jaqpotService.predictChempot(this.chempot).then((res:Prediction)=>{
+      res.data;
+      res.predictions;
+      console.log(res.predictions);
+      })
+  
+
+  }
+
 
   
 

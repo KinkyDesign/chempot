@@ -68,11 +68,20 @@
     <td mat-cell *matCellDef="let element"> {{element.smiles}} </td>
   </ng-container>
 
-  <!-- Weight Column -->
+
   <ng-container matColumnDef="Predict">
-    <th mat-header-cell *matHeaderCellDef> Predict </th>
-    <td mat-cell *matCellDef="let element"> Predict </td>
+    <th mat-header-cell  *matHeaderCellDef > Predict </th> 
+    <td mat-cell *matCellDef="let row" >
+         <!-- <button mat-button > Predict</button> -->
+         <button mat-raised-button color="accent" type="button-sm" onclick (click)="chempredict(row)" class="smiles-button">Predict</button>
+    </td>
   </ng-container>
+
+
+  <ng-container matColumnDef="Prediction">
+    <th mat-header-cell *matHeaderCellDef> Prediction </th>
+    <td mat-cell *matCellDef="let element"> Prediction </td>
+  </ng-container> 
 
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
