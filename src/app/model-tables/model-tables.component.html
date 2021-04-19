@@ -15,7 +15,7 @@
 </div> -->
 
 <!-- https://www.positronx.io/build-dynamic-html-table-in-angular-with-ngfor/ -->
-<div>
+<!-- <div>
   <table>
      <thead>
         <tr>
@@ -34,7 +34,7 @@
         </tr>
      </tbody>
   </table>
-</div>
+</div> -->
 
 
 <!-- <table mat-table [dataSource]="selectedModels">
@@ -51,4 +51,40 @@
 
 
 
+<table mat-table *ngIf = "render" [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="ModelTitle">
+    <th mat-header-cell *matHeaderCellDef> ModelTitle </th>
+    <td mat-cell *matCellDef="let element"> {{element.ModelTitle}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="Smiles">
+    <th mat-header-cell *matHeaderCellDef> Smiles </th>
+    <td mat-cell *matCellDef="let element"> {{element.smiles}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="Predict">
+    <th mat-header-cell  *matHeaderCellDef > Predict </th> 
+    <td mat-cell *matCellDef="let row" >
+         <!-- <button mat-button > Predict</button> -->
+         <button mat-raised-button color="accent" type="button-sm" onclick (click)="chempredict(row)" class="smiles-button">Predict</button>
+    </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="Prediction">
+    <th mat-header-cell *matHeaderCellDef> Prediction </th>
+    <td mat-cell *matCellDef="let element"> {{predictionArray}} </td>
+  </ng-container> 
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
 

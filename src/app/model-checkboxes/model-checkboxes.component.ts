@@ -128,28 +128,31 @@ export class ModelCheckboxes implements OnInit {
       );
       
 ////////////////////////// this part needs to be tested with non empty tags////////////////////////
-      this.modelApiService.getList(params).subscribe(
-        (models:Model[]) => {
-          this.models_to_view = models;
-          
-          this.models_to_view.forEach((model_to_view: Model) => {
+//  this.modelApiService.getList(params).subscribe(
+//           (models:Model[]) => {
+//           this.models_to_view = models;
+
+//           this.models_to_view.forEach((model_to_view: Model) => {
             
-            if(model_to_view.meta.tags){
-            model_to_view.meta.tags.forEach((model_tag:string) => {
+//             if(model_to_view.meta.tags){
+//             model_to_view.meta.tags.forEach((model_tag:string) => {
             
-              this.models_tags.push(model_tag);
+//               this.models_tags.push(model_tag);
 
-             })
-            }else{
+//              })
+//          }else{
 
-              this.models_tags = [''];
-            }
-          });
+//               this.models_tags = [''];
+//             }
+//           });
 
 
-        }
-      );
+//         }
+//        );
 ////////////////////////// this part needs to be tested with non empty tags////////////////////////
+
+    this.models_tags = ['MORDRED'];
+
 
     }
 
@@ -207,7 +210,7 @@ export class ModelCheckboxes implements OnInit {
     this.min = this.pageSize*(this.pageIndex);
     this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("tags", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+    let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
     this.modelApiService.getList(params).subscribe(
       (models:Model[]) => {
@@ -226,12 +229,13 @@ export class ModelCheckboxes implements OnInit {
     this.min = this.pageSize*(this.pageIndex);
     this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("tags", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+    let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
     this.modelApiService.getList(params).subscribe(
       (models:Model[]) => {
         this.models_to_view = models;
         this.modelsDataSource.data = this.models_to_view;
+
 
       }
     );
@@ -251,6 +255,7 @@ export class ModelCheckboxes implements OnInit {
         this.models_to_view = models;
         this.modelsDataSource.data = this.models_to_view;
 
+
       }
     );
 
@@ -268,6 +273,7 @@ export class ModelCheckboxes implements OnInit {
       (models:Model[]) => {
         this.models_to_view = models;
         this.modelsDataSource.data = this.models_to_view;
+
 
       }
     );
