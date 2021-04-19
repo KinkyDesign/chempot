@@ -42,6 +42,7 @@ export class ModelTables implements OnInit {
   // predict = new MatButtonModule;
   render = false;
   jaqpotClient: JaqpotClient;
+  predictionArray: any[] = [];
 
   constructor(
 
@@ -149,14 +150,19 @@ export class ModelTables implements OnInit {
   chempredict(tablerow:any){
     
     this.chempot.withDoa = false;
-    this.chempot.descriptors = "MORDRED";
-    this.chempot.modelId = tablerow.ModelTitle;
+    this.chempot.descriptors = "mordred";
+    this.chempot.modelId = "lGImPJ65nFYp3sUqFKq5";
     this.chempot.smiles = tablerow.smiles;
     this.jaqpotService.predictChempot(this.chempot).then((res:Prediction)=>{
       res.data;
       res.predictions;
-      console.log(res.predictions);
+      this.predictionArray = res.predictions;
+      console.log(res);
+
       })
+
+  
+
   
 
   }

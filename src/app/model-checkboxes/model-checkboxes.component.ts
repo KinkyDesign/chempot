@@ -210,7 +210,7 @@ export class ModelCheckboxes implements OnInit {
     this.min = this.pageSize*(this.pageIndex);
     this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("tags", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+    let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
     this.modelApiService.getList(params).subscribe(
       (models:Model[]) => {
@@ -229,7 +229,7 @@ export class ModelCheckboxes implements OnInit {
     this.min = this.pageSize*(this.pageIndex);
     this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("tags", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+    let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
     this.modelApiService.getList(params).subscribe(
       (models:Model[]) => {
