@@ -49,7 +49,8 @@ export class ModelCheckboxes implements OnInit {
   model_tag: string;
   o:Organization;
   e:PageEvent;
-  t:string;
+  tag:string;
+  // t: string;
 
   // form: FormGroup;
   // modelControl: FormControl;
@@ -115,7 +116,54 @@ export class ModelCheckboxes implements OnInit {
 
 
 
-  public getModelsTotalNumberAndTagsByOrganization(o:Organization){
+  // public getModelsTotalNumberAndTagsByOrganization(o:Organization){
+  //   if(o){
+
+  //   this.organization = o;
+  //   let params = new HttpParams().set("organization", this.organization._id);
+  //   // https://stackoverflow.com/questions/37364973/what-is-the-difference-between-promises-and-observables
+  //   // https://egghead.io/lessons/angular-fetch-data-from-an-api-using-the-httpclient-in-angular
+  //   // https://stackoverflow.com/questions/46767880/what-does-subscribe-do-and-how-it-is-related-to-observable
+  //   this.modelApiService.count<Model>(params).subscribe(
+  //     total => this.modelsByOrgCounter = total.headers.get('total')
+  //     );
+      
+  //   ////////////////////////// this part needs to be tested with non empty tags////////////////////////
+  //   //  this.modelApiService.getList(params).subscribe(
+  //   //           (models:Model[]) => {
+  //   //           this.models_to_view = models;
+
+  //   //           this.models_to_view.forEach((model_to_view: Model) => {
+                
+  //   //             if(model_to_view.meta.tags){
+  //   //             model_to_view.meta.tags.forEach((model_tag:string) => {
+                
+  //   //               this.models_tags.push(model_tag);
+
+  //   //              })
+  //   //          }else{
+
+  //   //               this.models_tags = [''];
+  //   //             }
+  //   //           });
+
+
+  //   //         }
+  //   //        );
+  //   ////////////////////////// this part needs to be tested with non empty tags////////////////////////
+
+  //   this.models_tags = ['mordred', 'cdk'];
+
+
+  //   }
+
+
+  // }
+
+
+
+
+  public getModelsTotalNumberByOrganization(o:Organization){
     if(o){
 
     this.organization = o;
@@ -127,31 +175,6 @@ export class ModelCheckboxes implements OnInit {
       total => this.modelsByOrgCounter = total.headers.get('total')
       );
       
-////////////////////////// this part needs to be tested with non empty tags////////////////////////
-//  this.modelApiService.getList(params).subscribe(
-//           (models:Model[]) => {
-//           this.models_to_view = models;
-
-//           this.models_to_view.forEach((model_to_view: Model) => {
-            
-//             if(model_to_view.meta.tags){
-//             model_to_view.meta.tags.forEach((model_tag:string) => {
-            
-//               this.models_tags.push(model_tag);
-
-//              })
-//          }else{
-
-//               this.models_tags = [''];
-//             }
-//           });
-
-
-//         }
-//        );
-////////////////////////// this part needs to be tested with non empty tags////////////////////////
-
-    this.models_tags = ['MORDRED'];
 
 
     }
@@ -166,130 +189,240 @@ export class ModelCheckboxes implements OnInit {
 
 
 
-  public getModelsByOrganizationAndTag(o: Organization, e?:PageEvent, t?:string) {
+
+  // public getModelsByOrganizationAndTag(o: Organization, e?:PageEvent, t?:string) {
 
 
-   if(e && o && (!t||(t = ''))){
+  //  if(e && o && (!t||(t = ''))){
 
-    this.pageIndex = e.pageIndex;
-    this.pageSize = e.pageSize;
-    this.min = this.pageSize*(this.pageIndex);
-    this.max = this.min + (this.pageSize);
+  //   this.pageIndex = e.pageIndex;
+  //   this.pageSize = e.pageSize;
+  //   this.min = this.pageSize*(this.pageIndex);
+  //   this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+  //   let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
     
-    this.modelApiService.getList(params).subscribe(
-      (models:Model[]) => {
-        this.models_to_view = models;
-        this.modelsDataSource.data = this.models_to_view;
-      }
-    );
-    return e;
+  //   this.modelApiService.getList(params).subscribe(
+  //     (models:Model[]) => {
+  //       this.models_to_view = models;
+  //       this.modelsDataSource.data = this.models_to_view;
+  //     }
+  //   );
+  //   return e;
 
-   }else if(!e && o && (!t||(t = ''))){
+  //  }else if(!e && o && (!t||(t = ''))){
 
-     this.pageIndex = 0;
-     this.pageSize = 5;
-     this.min = this.pageSize*(this.pageIndex);
-     this.max = this.min + (this.pageSize);
+  //    this.pageIndex = 0;
+  //    this.pageSize = 5;
+  //    this.min = this.pageSize*(this.pageIndex);
+  //    this.max = this.min + (this.pageSize);
  
-     let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+  //    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
     
-     this.modelApiService.getList(params).subscribe(
-       (models:Model[]) => {
-         this.models_to_view = models;
-         this.modelsDataSource.data = this.models_to_view;
+  //    this.modelApiService.getList(params).subscribe(
+  //      (models:Model[]) => {
+  //        this.models_to_view = models;
+  //        this.modelsDataSource.data = this.models_to_view;
 
-       }
-     );
+  //      }
+  //    );
+
+  //    return null;
  
-   }else if(e && o && (t && (t != ''))){
+  //  }else if(e && o && (t && (t != ''))){
 
-    this.pageIndex = e.pageIndex;
-    this.pageSize = e.pageSize;
-    this.min = this.pageSize*(this.pageIndex);
-    this.max = this.min + (this.pageSize);
+  //   this.pageIndex = e.pageIndex;
+  //   this.pageSize = e.pageSize;
+  //   this.min = this.pageSize*(this.pageIndex);
+  //   this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+  //   let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
-    this.modelApiService.getList(params).subscribe(
-      (models:Model[]) => {
-        this.models_to_view = models;
-        this.modelsDataSource.data = this.models_to_view;
+  //   this.modelApiService.getList(params).subscribe(
+  //     (models:Model[]) => {
+  //       this.models_to_view = models;
+  //       this.modelsDataSource.data = this.models_to_view;
 
-      }
-    );
+  //     }
+  //   );
 
-    return e;
+  //   return e;
 
-   }else if(!e && o && (t && (t != ''))){
+  //  }else if(!e && o && (t && (t != ''))){
 
-    this.pageIndex = 0;
-    this.pageSize = 5;
-    this.min = this.pageSize*(this.pageIndex);
-    this.max = this.min + (this.pageSize);
+  //   this.pageIndex = 0;
+  //   this.pageSize = 5;
+  //   this.min = this.pageSize*(this.pageIndex);
+  //   this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+  //   let params = new HttpParams().set("tag", this.t).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
-    this.modelApiService.getList(params).subscribe(
-      (models:Model[]) => {
-        this.models_to_view = models;
-        this.modelsDataSource.data = this.models_to_view;
+  //   this.modelApiService.getList(params).subscribe(
+  //     (models:Model[]) => {
+  //       this.models_to_view = models;
+  //       this.modelsDataSource.data = this.models_to_view;
 
 
-      }
-    );
+  //     }
+  //   );
+    
+  //   return null;
 
+  //  }else if(!e && o && (t && (t = ''))){
 
-   }else if(!e && o && (t && (t = ''))){
+  //   this.pageIndex = 0;
+  //   this.pageSize = 5;
+  //   this.min = this.pageSize*(this.pageIndex);
+  //   this.max = this.min + (this.pageSize);
 
-    this.pageIndex = 0;
-    this.pageSize = 5;
-    this.min = this.pageSize*(this.pageIndex);
-    this.max = this.min + (this.pageSize);
-
-    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+  //   let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
-    this.modelApiService.getList(params).subscribe(
-      (models:Model[]) => {
-        this.models_to_view = models;
-        this.modelsDataSource.data = this.models_to_view;
+  //   this.modelApiService.getList(params).subscribe(
+  //     (models:Model[]) => {
+  //       this.models_to_view = models;
+  //       this.modelsDataSource.data = this.models_to_view;
 
 
-      }
-    );
+  //     }
+  //   );
 
+  //   return null;
 
-   }else if(e && o && (t && (t = ''))){
+  //  }else if(e && o && (t && (t = ''))){
 
-    this.pageIndex = e.pageIndex;
-    this.pageSize = e.pageSize;
-    this.min = this.pageSize*(this.pageIndex);
-    this.max = this.min + (this.pageSize);
+  //   this.pageIndex = e.pageIndex;
+  //   this.pageSize = e.pageSize;
+  //   this.min = this.pageSize*(this.pageIndex);
+  //   this.max = this.min + (this.pageSize);
 
-    let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+  //   let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
    
-    this.modelApiService.getList(params).subscribe(
-      (models:Model[]) => {
-        this.models_to_view = models;
-        this.modelsDataSource.data = this.models_to_view;
+  //   this.modelApiService.getList(params).subscribe(
+  //     (models:Model[]) => {
+  //       this.models_to_view = models;
+  //       this.modelsDataSource.data = this.models_to_view;
 
 
-      }
-    );
+  //     }
+  //   );
 
-    return e;
+  //   return e;
 
-   }
-  }
-
-
+  //  }
+  // }
 
 
 
-  public getModels(o:Organization, e?:PageEvent, t?:string){
-    this.getModelsTotalNumberAndTagsByOrganization(o);
-    this.getModelsByOrganizationAndTag(o, e, t);
+  // public getModelsByOrganizationAndTag(o?: Organization, e?:PageEvent, tag?:string) {
+  //     if(o && tag){
+
+
+  //       this.pageIndex = 0;
+  //       this.pageSize = 5;
+  //       this.min = this.pageSize*(this.pageIndex);
+  //       this.max = this.min + (this.pageSize);
+
+  //       let tag_ = tag;
+  //       console.log(tag_);
+  //       let params = new HttpParams().set("tag", tag_).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+       
+  //       this.modelApiService.getList(params).subscribe(
+  //         (models:Model[]) => {
+  //           this.models_to_view = models;
+  //           this.modelsDataSource.data = this.models_to_view;
+    
+    
+  //         }
+  //       );
+
+    
+        
+  //     }else if(o && tag && e){
+
+  //       this.pageIndex = e.pageIndex;
+  //       this.pageSize = e.pageSize;
+  //       this.min = this.pageSize*(this.pageIndex);
+  //       this.max = this.min + (this.pageSize);
+
+  //       let tag_ = tag;
+  //       console.log(tag_);
+  //       let params = new HttpParams().set("tag", tag_).set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+       
+  //       this.modelApiService.getList(params).subscribe(
+  //         (models:Model[]) => {
+  //           this.models_to_view = models;
+  //           this.modelsDataSource.data = this.models_to_view;
+    
+    
+  //         }
+  //       );
+
+
+  //      }
+
+
+  // }
+
+
+
+
+  public getModelsByOrganization(o?: Organization, e?:PageEvent,) {
+    if(o&&e){
+
+
+      this.pageIndex = e.pageIndex;
+      this.pageSize = e.pageSize;
+      this.min = this.pageSize*(this.pageIndex);
+      this.max = this.min + (this.pageSize);
+
+      let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+     
+      this.modelApiService.getList(params).subscribe(
+        (models:Model[]) => {
+          this.models_to_view = models;
+          this.modelsDataSource.data = this.models_to_view;
+          console.log(this.modelsDataSource.data)
+  
+        }
+      );
+
+      return e;
+      
+      
+    }else if(o&&!e){
+
+      this.pageIndex = 0;
+      this.pageSize = 5;
+      this.min = this.pageSize*(this.pageIndex);
+      this.max = this.min + (this.pageSize);
+
+      let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
+     
+      this.modelApiService.getList(params).subscribe(
+        (models:Model[]) => {
+          this.models_to_view = models;
+          this.modelsDataSource.data = this.models_to_view;
+          console.log(this.modelsDataSource.data)
+  
+        }
+      );
+      
+    }
+
+
+}
+
+
+
+
+
+
+
+  public getModels(o:Organization, e?:PageEvent, tag?:string){
+    this.getModelsTotalNumberByOrganization(o);
+    this.getModelsByOrganization(o, e);
+    // this.getModelsTotalNumberAndTagsByOrganization(o);
+    // this.getModelsByOrganizationAndTag(o, e, tag);
     // this.getModelsTagsByOrganization();
   }
   

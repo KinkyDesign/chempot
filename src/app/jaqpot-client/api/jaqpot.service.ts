@@ -24,6 +24,7 @@ export class JaqpotService implements IJaqpotIntegration {
   }
 
   public predictChempot(chempot:Chempot):Promise<Prediction>{
+    // this._jaqpotClient.getOrgsTagModels()
     let token = this.oidcSecurityService.getToken();
     return this._jaqpotClient.chempot(chempot, token);
   }

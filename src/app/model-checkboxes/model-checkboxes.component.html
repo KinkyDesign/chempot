@@ -85,13 +85,13 @@
 
 
 <!-- this part needs to be tested with non empty tags -->
-<div class="model-checkboxes">
+<!-- <div class="model-checkboxes">
 
 
   <form>
     <mat-form-field appearance="fill">
         <mat-label>Select model tag</mat-label>
-        <mat-select [formControl]="tagControl" [(ngModel)]="model_tag" (selectionChange)="getModelsByOrganizationAndTag(o = this.organization, e = $event, t = this.models_tags[0])">  
+        <mat-select [formControl]="tagControl" [(ngModel)]="model_tag" (selectionChange)="getModelsByOrganizationAndTag(o = this.organization, e = $event, tag = model_tag)">  
           <mat-option *ngFor="let model_tag of models_tags; let i=index" [value]="model_tag"> 
           {{model_tag}} 
           </mat-option>
@@ -100,7 +100,7 @@
   
   </form>
   
-</div>
+</div> -->
 
 <!-- this part needs to be tested with non empty tags -->
 
@@ -121,7 +121,7 @@
                 [pageIndex]= "pageIndex"
                 [pageSize]= "pageSize"
                 [pageSizeOptions]="[5, 10, 25, 100]"
-                (page)="pageEvent = getModelsByOrganizationAndTag(o = this.organization, e = $event)"
+                (page)="pageEvent = getModelsByOrganization(o = this.organization, e = $event)"
                 >
 </mat-paginator>
 
