@@ -28,14 +28,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configf } from './models/config';
 import { map, switchMap } from 'rxjs/operators';
 import { JsmeComponent } from './jsme/jsme.component';
-import { ModelTables } from './model-tables/model-tables.component';
 import { ModelCheckboxes } from './model-checkboxes/model-checkboxes.component';
+import { ModelTables } from './model-tables/model-tables.component';
 import { DialogsService } from '../app/dialogs/dialogs.service'
 import { MatDialog } from '@angular/material/dialog';
 import { OrganizationService } from './jaqpot-client/api/organization.service';
 import { MatTableModule } from '@angular/material/table';
-
-
+import {MatTableExporterModule } from 'mat-table-exporter';
 // import { CdkTreeModule } from '@angular/cdk/tree';
 // import { MatTreeModule } from '@angular/material/tree';
 
@@ -50,7 +49,7 @@ import { MatTableModule } from '@angular/material/table';
     JsmeComponent,
     ModelCheckboxes,
     ModelTables
-  ],
+    ],
   imports: [
     MatChipsModule,
     MatPaginatorModule,
@@ -79,6 +78,7 @@ import { MatTableModule } from '@angular/material/table';
     FormsModule,
     MatSidenavModule,
     MatTableModule,
+    MatTableExporterModule,
     // CdkTreeModule,
     // MatTreeModule,
     AuthModule.forRoot()

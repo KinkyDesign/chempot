@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Model } from '../jaqpot-client/model/models';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { SelectedModelsStateService } from '../model-checkboxes/selectedModels-state.service';
@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { JaqpotClient } from '@euclia/jaqpot-client';
 import { JaqpotService } from '../jaqpot-client/api/jaqpot.service';
 import { Prediction } from '@euclia/jaqpot-client/dist/models/jaqpot.models';
-
+import { MatTableExporterDirective, ExportType, MatTableExporterModule } from 'mat-table-exporter';
 // import {MatButtonModule} from '@angular/material/button';
 // import { PredictionService } from './prediction-service'
 // import { Observable, BehaviorSubject } from 'rxjs'
@@ -19,6 +19,9 @@ export interface TableObject {
   ModelTitle: string
   model: Model
   smiles: string
+  predictedVariable: string
+  prediction: string
+  
 }
 
 @Component({
@@ -26,14 +29,27 @@ export interface TableObject {
   templateUrl: './model-tables.component.html',
   styleUrls: ['./model-tables.component.scss'],
 })
+
+
 export class ModelTables implements OnInit {
+
+    @ViewChild(MatTableExporterDirective) exporter: MatTableExporterDirective;
+    exportIt() {
+    this.exporter.exportTable(ExportType.XLSX, {
+      fileName: "prediction_table",
+      Props: {
+        Author: "Pol"
+        }
+      });
+     }
+
 
   form: FormGroup;
   modelControl: FormControl;
   selectedModels: Model[] = [];
   rendered_models: TableObject[];
   selected_smile: string;
-  displayedColumns: string[] = ['ModelTitle', 'Smiles', 'Predict', 'Prediction'];
+  displayedColumns: string[] = ['ModelTitle', 'Smiles', 'Predict', 'PredictedVariable','Prediction'];
   selected_model_ids: string[];
   chempot: Chempot = {};
   token: string;
@@ -42,7 +58,7 @@ export class ModelTables implements OnInit {
   // predict = new MatButtonModule;
   render = false;
   jaqpotClient: JaqpotClient;
-  predictionArray: any[] = [];
+  
 
   constructor(
 
@@ -52,12 +68,13 @@ export class ModelTables implements OnInit {
     private fb: FormBuilder,
     public oidcSecurityService: OidcSecurityService,
     private jaqpotService: JaqpotService,
+    public matTableExporter: MatTableExporterModule
     // public predictionService: PredictionService,
 
   ) {
 
     this.form = this.fb.group({some_array: this.fb.array([])});
-    // this.chempot.descriptors = "MORDRED";
+    // this.chempot.descriptors = "morded";
     // this.chempot.modelId = "2XyMtChRiSfZ6UmKirhi";
     // this.chempot.withDoa = false;
     // this.chempot.smiles = "c2ccc(c1ccccc1)cc2";
@@ -82,9 +99,9 @@ export class ModelTables implements OnInit {
       
 
       
-// The subscriptions must be nested for the dataSource to be updated by both the smiles and the models.
-// Nesting subscriptions is an antipattern, there are flattening functions, like mergemap, that can do
-// the same job in a better way, so when there is time I should refactor this part
+    // The subscriptions must be nested for the dataSource to be updated by both the smiles and the models.
+    // Nesting subscriptions is an antipattern, there are flattening functions, like mergemap, that can do
+    // the same job in a better way, so when there is time I should refactor this part
     this.smilesStateService.smilesChange$.subscribe(smile => {  
               this.selected_smile = smile;
               console.log(this.selected_smile);
@@ -101,9 +118,10 @@ export class ModelTables implements OnInit {
           let rm = <TableObject>{};
           rm.model = this.selectedModels[i];
           rm.smiles = this.selected_smile;
-          rm.ModelTitle = rm.model.meta.titles[0];  
+          rm.ModelTitle = rm.model.meta.titles[0];
+          rm.predictedVariable = "";
+          rm.prediction = ""; 
           this.dataSourceArray[i] = rm;
-
         }
   
   
@@ -135,14 +153,14 @@ export class ModelTables implements OnInit {
 
       });   
 
-// /////////////////////////////////////////////////
-    // var chempot:Chempot = {}
-    // chempot.descriptors = "MORDRED";
-    // chempot.modelId = "2XyMtChRiSfZ6UmKirhi";
-    // chempot.smiles = "CCSDDDF";
-    // chempot.withDoa = false;
-    // this.token = this.oidcSecurityService.getToken();
-// //////////////////////////////////////////////////
+    // /////////////////////////////////////////////////
+        // var chempot:Chempot = {}
+        // chempot.descriptors = "morded";
+        // chempot.modelId = "2XyMtChRiSfZ6UmKirhi";
+        // chempot.smiles = "CCSDDDF";
+        // chempot.withDoa = false;
+        // this.token = this.oidcSecurityService.getToken();
+    // //////////////////////////////////////////////////
     this.modelControl = new FormControl();
     
   }
@@ -150,14 +168,28 @@ export class ModelTables implements OnInit {
   chempredict(tablerow:any){
     
     this.chempot.withDoa = false;
-    this.chempot.descriptors = "mordred";
-    this.chempot.modelId = "lGImPJ65nFYp3sUqFKq5";
+    if(tablerow.model.meta.tags.some((x:string) => (x == "mordred"))){
+      this.chempot.descriptors = "mordred"; 
+    }else{
+      this.chempot.descriptors = "cdk"; 
+    }
+    // this.chempot.modelId = "RyUoluMPS5zGfUbPUmMz";
+    this.chempot.modelId = tablerow.model._id;
     this.chempot.smiles = tablerow.smiles;
     this.jaqpotService.predictChempot(this.chempot).then((res:Prediction)=>{
       res.data;
       res.predictions;
-      this.predictionArray = res.predictions;
-      console.log(res);
+      let rm = <TableObject>{};
+      rm.ModelTitle = tablerow.model.meta.titles[0];
+      rm.model = tablerow.model;
+      rm.smiles = this.chempot.smiles;
+      rm.predictedVariable = JSON.stringify(res.predictions).replace("[{", "").replace("}]", "").split(':')[0];
+      rm.prediction = JSON.stringify(res.predictions).replace("[{", "").replace("}]", "").substring(JSON.stringify(res.predictions).replace("[{", "").replace("}]", "").indexOf(":") + 1);
+      this.dataSourceArray.findIndex(x => x.model._id === tablerow.model._id);
+      this.dataSourceArray[this.dataSourceArray.findIndex(x => x.model._id === tablerow.model._id)] = rm;
+      this.dataSource.data = this.dataSourceArray;
+      // console.log(this.dataSourceArray.findIndex(x => x.model._id === tablerow.model._id));
+
 
       })
 
