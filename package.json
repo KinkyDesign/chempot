@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~11.2.4",
     "@angular/router": "~11.2.4",
     "@euclia/accounts-client": "^1.0.22",
-    "@euclia/jaqpot-client": "^1.0.4",
+    "@euclia/jaqpot-client": "^1.0.8",
     "angular-auth-oidc-client": "^11.0.0",
     "rxjs": "~6.6.7",
     "tslib": "^1.10.0",
