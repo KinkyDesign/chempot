@@ -50,6 +50,9 @@ export class ModelCheckboxes implements OnInit {
   o:Organization;
   e:PageEvent;
   tag:string;
+  models_to_view_mordred_or_cdk: Model[]| null = [];
+
+
   // t: string;
 
   // form: FormGroup;
@@ -163,24 +166,30 @@ export class ModelCheckboxes implements OnInit {
 
 
 
-  public getModelsTotalNumberByOrganization(o:Organization){
-    if(o){
+  // public getModelsTotalNumberByOrganization(o:Organization){
+  //   if(o){
 
-    this.organization = o;
-    let params = new HttpParams().set("organization", this.organization._id);
-    // https://stackoverflow.com/questions/37364973/what-is-the-difference-between-promises-and-observables
-    // https://egghead.io/lessons/angular-fetch-data-from-an-api-using-the-httpclient-in-angular
-    // https://stackoverflow.com/questions/46767880/what-does-subscribe-do-and-how-it-is-related-to-observable
-    this.modelApiService.count<Model>(params).subscribe(
-      total => this.modelsByOrgCounter = total.headers.get('total')
-      );
+  //   this.organization = o;
+  //   let params = new HttpParams().set("organization", this.organization._id);
+
+  //   // https://stackoverflow.com/questions/37364973/what-is-the-difference-between-promises-and-observables
+  //   // https://egghead.io/lessons/angular-fetch-data-from-an-api-using-the-httpclient-in-angular
+  //   // https://stackoverflow.com/questions/46767880/what-does-subscribe-do-and-how-it-is-related-to-observable
+  
+  //   this.modelApiService.count<Model>(params).subscribe(
+  //     total => {
+  //       this.modelsByOrgCounter = total.headers.get('total');
+  //      }
+
+  
+  //     );
+
       
 
+  //   }
 
-    }
 
-
-  }
+  // }
 
 
 
@@ -365,7 +374,6 @@ export class ModelCheckboxes implements OnInit {
 
 
 
-
   public getModelsByOrganization(o?: Organization, e?:PageEvent,) {
     if(o&&e){
 
@@ -375,13 +383,35 @@ export class ModelCheckboxes implements OnInit {
       this.min = this.pageSize*(this.pageIndex);
       this.max = this.min + (this.pageSize);
 
+  
+
       let params = new HttpParams().set("organization", o._id).set("start", this.min.toString()).set("max", this.max.toString());
      
       this.modelApiService.getList(params).subscribe(
         (models:Model[]) => {
-          this.models_to_view = models;
-          this.modelsDataSource.data = this.models_to_view;
-          console.log(this.modelsDataSource.data)
+        this.models_to_view = models;
+
+        let j = 0;
+        for(let i = 0; i < this.models_to_view.length; i++){
+          
+          if((typeof(this.models_to_view[i].meta.tags) !== 'undefined') && (this.models_to_view[i].meta.tags !== null)){
+
+              if((this.models_to_view[i].meta.tags.includes("mordred") === true)||(this.models_to_view[i].meta.tags.includes("cdk") === true)){
+
+                this.models_to_view_mordred_or_cdk[j] = this.models_to_view[i];
+                j = j+1;
+
+              }
+
+          }
+
+
+        } 
+        this.modelsDataSource.data = this.models_to_view_mordred_or_cdk;
+  
+
+        this.modelsByOrgCounter = this.modelsDataSource.data.length;
+        console.log(this.modelsDataSource.data)
   
         }
       );
@@ -400,9 +430,30 @@ export class ModelCheckboxes implements OnInit {
      
       this.modelApiService.getList(params).subscribe(
         (models:Model[]) => {
-          this.models_to_view = models;
-          this.modelsDataSource.data = this.models_to_view;
-          console.log(this.modelsDataSource.data)
+        this.models_to_view = models;
+       
+
+        let j = 0;
+        for(let i = 0; i < this.models_to_view.length; i++){
+          
+          if((typeof(this.models_to_view[i].meta.tags) !== 'undefined') && (this.models_to_view[i].meta.tags !== null)){
+
+              if((this.models_to_view[i].meta.tags.includes("mordred") === true)||(this.models_to_view[i].meta.tags.includes("cdk") === true)){
+
+                this.models_to_view_mordred_or_cdk[j] = this.models_to_view[i];
+                j = j+1;
+
+              }
+
+          }
+
+
+        } 
+        this.modelsDataSource.data = this.models_to_view_mordred_or_cdk;
+
+
+        this.modelsByOrgCounter = this.modelsDataSource.data.length;
+        console.log(this.modelsDataSource.data)
   
         }
       );
@@ -418,8 +469,8 @@ export class ModelCheckboxes implements OnInit {
 
 
 
-  public getModels(o:Organization, e?:PageEvent, tag?:string){
-    this.getModelsTotalNumberByOrganization(o);
+  public getModels(o:Organization, e?:PageEvent){
+    // this.getModelsTotalNumberByOrganization(o);
     this.getModelsByOrganization(o, e);
     // this.getModelsTotalNumberAndTagsByOrganization(o);
     // this.getModelsByOrganizationAndTag(o, e, tag);
