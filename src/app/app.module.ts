@@ -34,7 +34,7 @@ import { DialogsService } from '../app/dialogs/dialogs.service'
 import { MatDialog } from '@angular/material/dialog';
 import { OrganizationService } from './jaqpot-client/api/organization.service';
 import { MatTableModule } from '@angular/material/table';
-import { MatTableExporterModule } from 'mat-table-exporter';
+import {MatTableExporterModule } from 'mat-table-exporter';
 // import { CdkTreeModule } from '@angular/cdk/tree';
 // import { MatTreeModule } from '@angular/material/tree';
 
